@@ -10,6 +10,8 @@ namespace Checkers
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = Encoding.GetEncoding(1251); //russian in console (US Win)
+
             Board pBoard = new Board();
             pBoard.RunGame();
 
