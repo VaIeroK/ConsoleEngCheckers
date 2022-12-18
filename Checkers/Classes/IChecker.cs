@@ -39,6 +39,7 @@ namespace Checkers.Classes
         }
 
         public abstract bool TryMove(int x, int y, ref List<IChecker> Checkers, Board board, bool move = true, bool sleep = false);
+        public abstract bool IsSafeMove(int to_x, int to_y, ref List<IChecker> Checkers, Board board);
         public void GetKillCoords(ref List<IChecker> Checkers, out List<int[]> coords)
         {
             coords = new List<int[]>();

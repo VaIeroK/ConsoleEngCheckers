@@ -102,8 +102,11 @@ namespace Checkers.Classes
             var sw = new Stopwatch();
             sw.Start();
 
+            int wcount = 0;
+
             while (!moved)
             {
+                wcount++;
                 int checker_id = checkers_id[rnd.Next(0, checkers_id.Count)];
                 IChecker checker = pCheckers[checker_id];// Получаем рандомную шашку
 
@@ -125,6 +128,12 @@ namespace Checkers.Classes
                 int topx = rnd.Next(min_x, max_x);
                 int topy = rnd.Next(min_y, max_y);
                 int checkers_count = pCheckers.Count;
+
+                bool UseSafeLogic = (rnd.Next(1, 2) == 2);
+
+                if (wcount < 1500 && checker.TryMove(topx, topy, ref pCheckers, board, false) && (UseSafeLogic && !checker.IsSafeMove(topx, topy, ref pCheckers, board)))
+                    continue;
+
                 if (checker.TryMove(topx, topy, ref pCheckers, board))
                 {
                     if (checkers_count != pCheckers.Count)

@@ -71,5 +71,40 @@ namespace Checkers.Classes
 
             return res;
         }
+
+        public override bool IsSafeMove(int to_x, int to_y, ref List<IChecker> Checkers, Board board)
+        {
+            List<int> enemy_checkers_id = new List<int>(); // id шашек врагов
+
+            for (int i = 0; i < Checkers.Count; i++)
+                if (Checkers[i].TeamColor != TeamColor)
+                    enemy_checkers_id.Add(i);
+
+            int kill_coords_sum = 0, next_kill_coords_sum = 0;
+            for (int i = 0; i < enemy_checkers_id.Count; i++)
+            {
+                List<int[]> coords;
+                Checkers[enemy_checkers_id[i]].GetKillCoords(ref Checkers, out coords);
+                kill_coords_sum += coords.Count;
+            }
+
+            int CheckerX = Pos[1];
+            int CheckerY = Pos[0];
+            Move(to_x, to_y);
+
+            for (int i = 0; i < enemy_checkers_id.Count; i++)
+            {
+                List<int[]> coords;
+                Checkers[enemy_checkers_id[i]].GetKillCoords(ref Checkers, out coords);
+                next_kill_coords_sum += coords.Count;
+            }
+
+            Move(CheckerX, CheckerY);
+
+            if (next_kill_coords_sum > kill_coords_sum)
+                return false;
+
+            return true;
+        }
     }
 }

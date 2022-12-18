@@ -43,5 +43,10 @@ namespace Checkers.Classes
 
             return res;
         }
+
+        public override bool IsSafeMove(int to_x, int to_y, ref List<IChecker> Checkers, Board board)
+        {
+            return true;
+        }
     }
 }
