@@ -14,6 +14,7 @@ namespace Checkers.Classes
         }
 
         public ConsoleColor TeamColor;
+        public string Owner;
         public abstract void Move(ref List<IChecker> Checkers, Board board);
     }
 }

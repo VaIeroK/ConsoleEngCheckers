@@ -14,6 +14,7 @@ namespace Checkers.Classes
         {
             LastX = -1;
             LastY = -1;
+            Owner = "Player";
         }
 
         private int LastX, LastY;
@@ -172,6 +173,7 @@ input:
             {
                 if (checker.EqualPos(X, Y))
                 {
+                    Console.WriteLine("get ch");
                     int checkers_count = pCheckers.Count;
                     if (checker.TryMove(NewX, NewY, ref pCheckers, board))
                     {
@@ -198,7 +200,7 @@ input:
                 }
             }
 
-            Console.Write("Ход введён не верно!"); Board.endLine();
+            Console.Write("Ход введён не верно! 3"); Board.endLine();
             goto input;
         }
     }

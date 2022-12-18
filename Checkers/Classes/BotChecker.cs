@@ -10,7 +10,10 @@ namespace Checkers.Classes
     internal class BotChecker : IChecker
     {
 
-        public BotChecker(int x, int y, ConsoleColor color, bool placeUD) : base(x, y, color, placeUD) { }
+        public BotChecker(int x, int y, ConsoleColor color, bool placeUD) : base(x, y, color, placeUD) 
+        {
+            Owner = "Bot";
+        }
 
         public override bool TryMove(int x, int y, ref List<IChecker> Checkers, Board board, bool move = true, bool sleep = false)
         {

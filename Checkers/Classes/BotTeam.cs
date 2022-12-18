@@ -10,7 +10,10 @@ namespace Checkers.Classes
 {
     internal class BotTeam : ITeam
     {
-        public BotTeam(ConsoleColor color) : base (color) { }
+        public BotTeam(ConsoleColor color) : base (color) 
+        {
+            Owner = "Bot";
+        }
 
         public bool TryKill(ref List<IChecker> pCheckers, Board board)
         {

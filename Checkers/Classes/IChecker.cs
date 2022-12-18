@@ -20,6 +20,7 @@ namespace Checkers.Classes
         public ConsoleColor TeamColor;
         public bool IsDamka;
         public bool PlaceUD;
+        public string Owner;
 
         public int[] Pos
         {

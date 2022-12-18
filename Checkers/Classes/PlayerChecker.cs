@@ -8,7 +8,10 @@ namespace Checkers.Classes
 {
     internal class PlayerChecker : IChecker
     {
-        public PlayerChecker(int x, int y, ConsoleColor color, bool placeUD) : base(x, y, color, placeUD) { }
+        public PlayerChecker(int x, int y, ConsoleColor color, bool placeUD) : base(x, y, color, placeUD)
+        {
+            Owner = "Player";
+        }
 
         public override bool TryMove(int x, int y, ref List<IChecker> Checkers, Board board, bool move = true, bool sleep = false)
         {

@@ -19,7 +19,7 @@ namespace Checkers
         private static string SaveName;
         public static int BotWalkTime = 500;
         public static int aiLevel = 0;
-        public static string sAlphabet = "ABCDEFGH";//"АБВГДЕЖЗ";
+        public static string sAlphabet = "АБВГДЕЖЗ";
 
         public Board()
         {
@@ -402,25 +402,39 @@ namespace Checkers
             pCheckers.Clear();
 
             SaveName = sr.ReadLine();
+            aiLevel = Convert.ToInt32(sr.ReadLine());
 
-            ConsoleColor player_color = ConvertColor(sr.ReadLine());
-            ConsoleColor bot_color = (player_color == ConsoleColor.White ? ConsoleColor.Black : ConsoleColor.White);
-            pTeams = new ITeam[2] { new PlayerTeam(player_color), new BotTeam(bot_color) };
-            MoveSwitcher = Convert.ToBoolean(sr.ReadLine());
+            ConsoleColor first_color = ConvertColor(sr.ReadLine());
+            ConsoleColor second_color = (first_color == ConsoleColor.White ? ConsoleColor.Black : ConsoleColor.White);
+
+            pTeams = new ITeam[2];
+            if (sr.ReadLine() == "Bot")
+                pTeams[0] = new BotTeam(first_color);
+            else
+                pTeams[0] = new PlayerTeam(first_color);
+
+            if (sr.ReadLine() == "Bot")
+                pTeams[1] = new BotTeam(second_color);
+            else
+                pTeams[1] = new PlayerTeam(second_color);
+
+            MoveSwitcher = !Convert.ToBoolean(sr.ReadLine());
 
             int CheckersCount = Convert.ToInt32(sr.ReadLine());
             for (int i = 0; i < CheckersCount; i++)
             {
+                string Owner = sr.ReadLine();
                 int y = Convert.ToInt32(sr.ReadLine());
                 int x = Convert.ToInt32(sr.ReadLine());
                 ConsoleColor color = ConvertColor(sr.ReadLine());
                 bool damka = Convert.ToBoolean(sr.ReadLine());
+                bool ud = Convert.ToBoolean(sr.ReadLine());
                 IChecker checker;
 
-                if (color == player_color)
-                    checker = new PlayerChecker(x, y, color, false);
+                if (Owner == "Player")
+                    checker = new PlayerChecker(x, y, color, ud);
                 else
-                    checker = new BotChecker(x, y, color, true);
+                    checker = new BotChecker(x, y, color, ud);
 
                 checker.IsDamka = damka;
                 pCheckers.Add(checker);
@@ -444,16 +458,21 @@ namespace Checkers
 
             StreamWriter sw = new StreamWriter("saves\\" + SaveName);
             sw.WriteLine(SaveName);
+            sw.WriteLine(aiLevel);
             sw.WriteLine(pTeams[0].TeamColor.ToString());
+            sw.WriteLine(pTeams[0].Owner);
+            sw.WriteLine(pTeams[1].Owner);
             sw.WriteLine(MoveSwitcher);
 
             sw.WriteLine(pCheckers.Count.ToString());
             for (int i = 0; i < pCheckers.Count; i++)
             {
+                sw.WriteLine(pCheckers[i].Owner);
                 sw.WriteLine(pCheckers[i].Pos[0].ToString());
                 sw.WriteLine(pCheckers[i].Pos[1].ToString());
                 sw.WriteLine(pCheckers[i].TeamColor.ToString());
                 sw.WriteLine(pCheckers[i].IsDamka.ToString());
+                sw.WriteLine(pCheckers[i].PlaceUD.ToString());
             }
             sw.Close();
 
@@ -572,8 +591,8 @@ namespace Checkers
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.Write("\nСтатистика:"); endLine();
-            Console.Write($"Белых съедено:\t{12 - GetCheckersCount(ConsoleColor.White)}{endInLine()}Белых осталось:\t{GetCheckersCount(ConsoleColor.White)}"); endLine();
-            Console.WriteLine($"Чёрных съедено:\t{12 - GetCheckersCount(ConsoleColor.Black)}{endInLine()}Чёрных осталось:{GetCheckersCount(ConsoleColor.Black)}{endInLine()}");
+            Console.Write($"Белых съедено:   {12 - GetCheckersCount(ConsoleColor.White)}{endInLine()}Белых осталось:  {GetCheckersCount(ConsoleColor.White)}"); endLine();
+            Console.WriteLine($"Чёрных съедено:  {12 - GetCheckersCount(ConsoleColor.Black)}{endInLine()}Чёрных осталось: {GetCheckersCount(ConsoleColor.Black)}{endInLine()}");
             Console.ResetColor();
         }
 
