@@ -476,7 +476,7 @@ namespace Checkers
         {
             if (GetCheckersCount(ConsoleColor.White) == 0)
             {
-                Console.SetCursorPosition(0, 0);
+                Console.Clear();
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.Write("Чёрные победили!"); endLine();
                 GameValid = false;
@@ -484,14 +484,14 @@ namespace Checkers
             }
             else if (GetCheckersCount(ConsoleColor.Black) == 0)
             {
-                Console.SetCursorPosition(0, 0);
+                Console.Clear();
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.Write("Белые победили!"); endLine();
                 GameValid = false;
                 Console.ReadKey();
             }
 
-            Console.SetCursorPosition(0, 0);
+            Console.Clear();
             Save();
         }
 
