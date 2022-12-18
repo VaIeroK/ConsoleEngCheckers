@@ -59,7 +59,7 @@ namespace Checkers
         private void MenuUpdate()
         {
             Console.ResetColor();
-            Console.SetCursorPosition(0, 0);
+            Console.Clear();
             
             menIndex = 0;
         }

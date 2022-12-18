@@ -173,7 +173,6 @@ input:
             {
                 if (checker.EqualPos(X, Y))
                 {
-                    Console.WriteLine("get ch");
                     int checkers_count = pCheckers.Count;
                     if (checker.TryMove(NewX, NewY, ref pCheckers, board))
                     {
