@@ -51,7 +51,6 @@
     <Compile Include="Classes\ITeam.cs" />
     <Compile Include="Classes\PlayerChecker.cs" />
     <Compile Include="Classes\PlayerTeam.cs" />
-    <Compile Include="Classes\ReadUtils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
