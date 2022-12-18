@@ -18,6 +18,8 @@ namespace Checkers
         private bool MoveSwitcher;
         private string SaveName;
         public static int BotWalkTime = 500;
+
+        public static int aiLevel = 0;
         public Board()
         {
             pCheckers = new List<IChecker>();
@@ -144,11 +146,14 @@ namespace Checkers
 
         private void GetStepText(int step)
         {
-            Console.ForegroundColor = (step == 0) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Цвет");
+            int auto_id = 0;
+            Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Цвет");
             Console.ForegroundColor = ConsoleColor.DarkGray;                                    Console.Write(">");
-            Console.ForegroundColor = (step == 1) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Тип игрока 1");
+            Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Тип игрока 1");
             Console.ForegroundColor = ConsoleColor.DarkGray;                                    Console.Write(">");
-            Console.ForegroundColor = (step == 2) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Тип игрока 2");
+            Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Тип игрока 2");
+            Console.ForegroundColor = ConsoleColor.DarkGray;                                    Console.Write(">");
+            Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Сложность");
             Console.WriteLine("\n");
             Console.ResetColor();
             switch (step)
@@ -161,6 +166,9 @@ namespace Checkers
                     break;
                 case 2:
                     Console.Write("Выберите тип игрока №2");
+                    break;
+                case 3:
+                    Console.Write("Выберите сложность");
                     break;
             }
             
@@ -178,7 +186,8 @@ namespace Checkers
             ConsoleColor first_color = new ConsoleColor();
             ConsoleColor second_color = new ConsoleColor();
 
-
+            bool uB1 = false;
+            bool uB2 = false;
             //
             MenuStart();
 
@@ -197,7 +206,7 @@ namespace Checkers
                         MenuButton("Чёрные");
                         MenuButton("Белые");
 
-                        Console.WriteLine();
+                        endLine();
                         MenuButton("Назад");
                     break;
                     case 1:
@@ -205,10 +214,21 @@ namespace Checkers
                         MenuButton("Игрок");
                         MenuButton("Бот");
 
-                        Console.WriteLine();
-                        MenuButton("Назад");
+                        endLine();
+                        //MenuButton("Назад");
+
+                        break;
+                    case 3:
+                        //if () { }
+                        MenuButton("Лёгкая");
+                        MenuButton("Средняя");
+                        MenuButton("Сложная");
+
+                        //endLine();
+                        //MenuButton("Назад");
                         break;
                 }
+                endLine();
                 Console.ForegroundColor = ConsoleColor.Black;
 
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
@@ -221,13 +241,24 @@ namespace Checkers
                         if (selIndex != 0) selIndex--;
                         break;
                     case ConsoleKey.Backspace:
-                        if (step == 0) { GameValid = false; return; }
-                        else step--;
+                       // if (step == 0) { GameValid = false; return; }
+                       // else step--;
                         break;
                     case ConsoleKey.Enter:
+                        
+                        if (step == 3 && uB1 || uB2)
+                        {
+                            aiLevel = selIndex;
+                            step++;
+                        }
+                        else
                         if (selIndex == 2 && step == 0) { GameValid = false; return; }
-                        else if (selIndex == 2 && step != 0)
-                            step--;
+                        //else if (selIndex == 2 && step != 0 && step !=3 || selIndex == 3)
+                        //{
+                        //    if (step == 1) { uB1 = false; uB2 = false; }
+                        //    else if (step == 2) { uB2 = false; }
+                        //    step--;
+                        //}
                         else if (selIndex != 2)
                         {
                             if (step == 0)
@@ -241,6 +272,7 @@ namespace Checkers
                                 {
                                     if (step == 1)
                                     {
+                                        uB1 = false;
                                         pTeams[0] = new PlayerTeam(first_color);
                                         for (int i = 5; i <= 7; i++)
                                             for (int j = 0; j <= 7; j += 2)
@@ -248,6 +280,7 @@ namespace Checkers
                                     }
                                     else
                                     {
+                                        uB2 = false;
                                         pTeams[1] = new PlayerTeam(second_color);
                                         for (int i = 0; i < 3; i++)
                                             for (int j = 0; j <= 7; j += 2)
@@ -256,8 +289,10 @@ namespace Checkers
                                 }
                                 else
                                 {
+
                                     if (step == 1)
                                     {
+                                        uB1 = true;
                                         pTeams[0] = new BotTeam(first_color);
                                         for (int i = 5; i <= 7; i++)
                                             for (int j = 0; j <= 7; j += 2)
@@ -265,17 +300,20 @@ namespace Checkers
                                     }
                                     else
                                     {
+                                        uB2 = true;
                                         pTeams[1] = new BotTeam(second_color);
                                         for (int i = 0; i < 3; i++)
                                             for (int j = 0; j <= 7; j += 2)
                                                 pCheckers.Add(new BotChecker(j + (i % 2 == 0 ? 1 : 0), i, second_color, true));
                                     }
                                 }
+                                //if ()
                             }
                             step++;
                         }
+                        
                         selIndex = 0;
-                        if (step == 3)
+                        if (step == 4 || (step == 3 && !uB1 && !uB2))
                         {
                             if (first_color == ConsoleColor.White)
                                 MoveSwitcher = true;
@@ -567,7 +605,8 @@ namespace Checkers
                 Console.Write(GetColumnName(i));
                 Console.ResetColor();
             }
-            Console.WriteLine();
+            //Console.WriteLine();
+            Board.endLine();
 
             for (int i = 0; i < 8; i++)
             {
@@ -592,7 +631,8 @@ namespace Checkers
 
                     WhitePixel = !WhitePixel;
                 }
-                Console.WriteLine();
+                //Console.WriteLine();
+                Board.endLine();
             }
 
             Console.ResetColor();
