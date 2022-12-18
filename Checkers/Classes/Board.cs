@@ -519,19 +519,12 @@ namespace Checkers
 
         public static void ShowPixelByCoord(int x, int y)
         {
-            if (x < 0 || y < 0 || x > 7 || y > 7)
-            {
-                Console.WriteLine($"Неизвестная координата x{x} y{y}");
-                return;
-            }
-            string alphabet = "АБВГДЕЖЗ";
-            Console.WriteLine($"Пиксель: {alphabet[x]}{y + 1}");
+            Console.WriteLine($"Пиксель: {GetPixelByCoord(x, y)}");
         }
 
         public static void ShowPixelByPixel(IChecker checker)
         {
-            string alphabet = "АБВГДЕЖЗ";
-            Console.WriteLine($"Пиксель: {alphabet[checker.Pos[1]]}{checker.Pos[0] + 1}");
+            Console.WriteLine($"Пиксель: {GetixelByPixel(checker)}");
         }
 
         public static string GetPixelByCoord(int x, int y)
