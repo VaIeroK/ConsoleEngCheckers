@@ -119,19 +119,19 @@ namespace Checkers.Classes
                 int min_x = checker.Pos[1] - 2;
                 int max_x = checker.Pos[1] + 2;
                 if (min_x < 0) min_x = 0;
-                if (min_x > 8) min_x = 8;
+                if (min_x > 7) min_x = 7;
                 if (max_x < 0) max_x = 0;
-                if (max_x > 8) max_x = 8;
+                if (max_x > 7) max_x = 7;
 
                 int min_y = checker.Pos[0] - 2;
                 int max_y = checker.Pos[0] + 2;
                 if (min_y < 0) min_y = 0;
-                if (min_y > 8) min_y = 8;
+                if (min_y > 7) min_y = 7;
                 if (max_y < 0) max_y = 0;
-                if (max_y > 8) max_y = 8;
+                if (max_y > 7) max_y = 7;
 
-                int topx = rnd.Next(min_x, max_x);
-                int topy = rnd.Next(min_y, max_y);
+                int topx = rnd.Next(min_x, max_x + 1);
+                int topy = rnd.Next(min_y, max_y + 1);
                 int checkers_count = pCheckers.Count;
 
                 // Логика отхода при опасности, и запрета идти в клетку где шашку убъют. Вызывается с шансом 66% т.к. слишком осторожные шашки могут подперать друг друга
@@ -172,7 +172,6 @@ namespace Checkers.Classes
             Thread.Sleep(Board.BotWalkTime);
 
             bool moved = false;
-            Random rnd = new Random();
 
             if (!moved)
                 moved = TryKill(ref pCheckers, board);
