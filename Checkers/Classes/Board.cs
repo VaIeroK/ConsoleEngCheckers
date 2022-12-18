@@ -18,8 +18,9 @@ namespace Checkers
         private bool MoveSwitcher;
         private string SaveName;
         public static int BotWalkTime = 500;
-
         public static int aiLevel = 0;
+        public static string sAlphabet = "ABCDEFGH";//"АБВГДЕЖЗ";
+
         public Board()
         {
             pCheckers = new List<IChecker>();
@@ -30,34 +31,31 @@ namespace Checkers
 
         private int menIndex = 0;
         private int selIndex = 0;
+
         public static void endLine()
         {
             Console.Write(endInLine());
         }
+
         public static string endInLine()
         {
             return ("                                  \n");
         }
+
         private void clearEx()
         {
-            //Console.SetCursorPosition(0, 0);
-            //for (int i = 0; i < 50; i++)
-            //{
-            //    Console.WriteLine("                            ");
-            //}
-
             Console.SetCursorPosition(0, 0);
             Console.Clear();
         }
 
-    private void MenuStart()
+        private void MenuStart()
         {
-            //Console.Clear();
             clearEx();
             
             menIndex = 0;
             selIndex = 0;
         }
+
         private void MenuUpdate()
         {
             Console.ResetColor();
@@ -65,6 +63,7 @@ namespace Checkers
             
             menIndex = 0;
         }
+
         private void MenuTitle(string title)
         {
             StringBuilder corner = new StringBuilder("=============================");
@@ -119,8 +118,6 @@ namespace Checkers
 
                 Console.ForegroundColor = ConsoleColor.Black;
 
-                
-
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
                 switch (consoleKeyInfo.Key) 
                 {
@@ -139,7 +136,6 @@ namespace Checkers
                                 MenuStart();
                                 break;
                             case 1:
-                                //Console.ResetColor();
                                 LoadGame();
                                 MenuStart();
                                 break;
@@ -189,14 +185,13 @@ namespace Checkers
             pCheckers.Clear();
             GameValid = true;
             pTeams = new ITeam[2];
-            //
 
             ConsoleColor first_color = new ConsoleColor();
             ConsoleColor second_color = new ConsoleColor();
 
             bool uB1 = false;
             bool uB2 = false;
-            //
+
             MenuStart();
 
             int step = 0;
@@ -223,17 +218,11 @@ namespace Checkers
                         MenuButton("Бот");
 
                         endLine();
-                        //MenuButton("Назад");
-
                         break;
                     case 3:
-                        //if () { }
                         MenuButton("Лёгкая");
                         MenuButton("Средняя");
                         MenuButton("Сложная");
-
-                        //endLine();
-                        //MenuButton("Назад");
                         break;
                 }
                 endLine();
@@ -248,10 +237,6 @@ namespace Checkers
                     case ConsoleKey.UpArrow:
                         if (selIndex != 0) selIndex--;
                         break;
-                    case ConsoleKey.Backspace:
-                       // if (step == 0) { GameValid = false; return; }
-                       // else step--;
-                        break;
                     case ConsoleKey.Enter:
                         
                         if (step == 3 && uB1 || uB2)
@@ -259,14 +244,11 @@ namespace Checkers
                             aiLevel = selIndex;
                             step++;
                         }
-                        else
-                        if (selIndex == 2 && step == 0) { GameValid = false; return; }
-                        //else if (selIndex == 2 && step != 0 && step !=3 || selIndex == 3)
-                        //{
-                        //    if (step == 1) { uB1 = false; uB2 = false; }
-                        //    else if (step == 2) { uB2 = false; }
-                        //    step--;
-                        //}
+                        else if (selIndex == 2 && step == 0) 
+                        { 
+                            GameValid = false;
+                            return; 
+                        }
                         else if (selIndex != 2)
                         {
                             if (step == 0)
@@ -315,7 +297,6 @@ namespace Checkers
                                                 pCheckers.Add(new BotChecker(j + (i % 2 == 0 ? 1 : 0), i, second_color, true));
                                     }
                                 }
-                                //if ()
                             }
                             step++;
                         }
@@ -336,7 +317,6 @@ namespace Checkers
 
                         break;
                 }
-                //Console.ResetColor();
             } while (true);
         }
 
@@ -541,14 +521,12 @@ namespace Checkers
             {
                 return ($"x{x} y{y}");
             }
-            string alphabet = "АБВГДЕЖЗ";
-            return ($"{alphabet[x]}{y + 1}");
+            return ($"{sAlphabet[x]}{y + 1}");
         }
 
         public static string GetixelByPixel(IChecker checker)
         {
-            string alphabet = "АБВГДЕЖЗ";
-            return ($"{alphabet[checker.Pos[1]]}{checker.Pos[0] + 1}");
+            return ($"{sAlphabet[checker.Pos[1]]}{checker.Pos[0] + 1}");
         }
 
         public static IChecker GetPixel(int X, int Y, ref List<IChecker> Checkers)
@@ -579,12 +557,6 @@ namespace Checkers
                 Checkers.Remove(GetPixel(X, Y, ref Checkers));
         }
 
-        public void RemoveChecker(int X, int Y)
-        {
-            if (pCheckers.Contains(GetPixel(X, Y)))
-                pCheckers.Remove(GetPixel(X, Y));
-        }
-
         public void DrawStats()
         {
             Console.ForegroundColor = ConsoleColor.Red;
@@ -603,10 +575,9 @@ namespace Checkers
             {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(GetColumnName(i));
+                Console.Write((sAlphabet[i]).ToString() + "  ");
                 Console.ResetColor();
             }
-            //Console.WriteLine();
             Board.endLine();
 
             for (int i = 0; i < 8; i++)
@@ -619,7 +590,7 @@ namespace Checkers
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.Green;
 
-                Console.Write(GetRowName(i));
+                Console.Write((i + 1).ToString());
 
                 for (int j = 0; j < 8; j++)
                 {
@@ -632,22 +603,10 @@ namespace Checkers
 
                     WhitePixel = !WhitePixel;
                 }
-                //Console.WriteLine();
                 Board.endLine();
             }
 
             Console.ResetColor();
-        }
-
-        private string GetRowName(int idx)
-        {
-            return (idx + 1).ToString() + "";
-        }
-
-        private string GetColumnName(int idx)
-        {
-            string alphabet = "АБВГДЕЖЗ";
-            return (alphabet[idx]).ToString() + "  ";
         }
     }
 }

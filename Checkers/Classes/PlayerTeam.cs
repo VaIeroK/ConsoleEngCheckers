@@ -102,16 +102,15 @@ input:
                 goto input;
             }
 
-            string alphabet = "АБВГДЕЖЗ";
             int X, Y;
             int NewX, NewY;
 
             try
             {
-                X = alphabet.IndexOf(FirstPlace[0]);
+                X = Board.sAlphabet.IndexOf(FirstPlace[0]);
                 Y = Convert.ToInt32(FirstPlace[1].ToString()) - 1;
 
-                NewX = alphabet.IndexOf(SecondPlace[0]);
+                NewX = Board.sAlphabet.IndexOf(SecondPlace[0]);
                 NewY = Convert.ToInt32(SecondPlace[1].ToString()) - 1;
             }
             catch (Exception)
