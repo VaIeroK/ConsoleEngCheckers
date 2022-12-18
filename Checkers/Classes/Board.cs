@@ -28,17 +28,38 @@ namespace Checkers
 
         private int menIndex = 0;
         private int selIndex = 0;
-
-        private void MenuStart()
+        public static void endLine()
         {
-            Console.Clear();
+            Console.Write(endInLine());
+        }
+        public static string endInLine()
+        {
+            return ("                 \n");
+        }
+        private void clearEx()
+        {
+            Console.SetCursorPosition(0, 0);
+            for (int i = 0; i < 50; i++)
+            {
+                Console.WriteLine("                            ");
+            }
+
+            Console.SetCursorPosition(0, 0);
+        }
+
+    private void MenuStart()
+        {
+            //Console.Clear();
+            clearEx();
+            
             menIndex = 0;
             selIndex = 0;
         }
         private void MenuUpdate()
         {
             Console.ResetColor();
-            Console.Clear();
+            Console.SetCursorPosition(0, 0);
+            //Console.Clear();
             menIndex = 0;
         }
         private void MenuTitle(string title)
@@ -70,7 +91,7 @@ namespace Checkers
             Console.ForegroundColor = (menIndex == selIndex) ? ConsoleColor.White : ConsoleColor.DarkGray;
 
             char c = (menIndex == selIndex) ? '>' : ' ';
-            Console.WriteLine($"{c} {Text}\t\t\t\t"); ++menIndex;
+            Console.Write($"{c} {Text}"); endLine(); ++menIndex;
 
         }
 
@@ -85,7 +106,8 @@ namespace Checkers
 
                 MenuTitle("ШИШКИ");
                 MenuButton("Играть");
-                MenuButton("Загрузить сохранение");
+                MenuButton("Загрузить сохранение"); endLine();
+                MenuButton("Выход");
 
                 Console.ForegroundColor = ConsoleColor.Black;
 
@@ -110,6 +132,9 @@ namespace Checkers
                                 //Console.ResetColor();
                                 LoadGame();
                                 MenuStart();
+                                break;
+                            case 2:
+                                Environment.Exit(0);
                                 break;
                         }
                         break;
@@ -138,7 +163,9 @@ namespace Checkers
                     Console.Write("Выберите тип игрока №2");
                     break;
             }
-            Console.WriteLine("\t\t\t\n");
+            
+            endLine();
+            endLine();
         }
 
         public void CreateGame()
@@ -192,6 +219,10 @@ namespace Checkers
                         break;
                     case ConsoleKey.UpArrow:
                         if (selIndex != 0) selIndex--;
+                        break;
+                    case ConsoleKey.Backspace:
+                        if (step == 0) { GameValid = false; return; }
+                        else step--;
                         break;
                     case ConsoleKey.Enter:
                         if (selIndex == 2 && step == 0) { GameValid = false; return; }
@@ -293,6 +324,8 @@ namespace Checkers
                     case ConsoleKey.UpArrow:
                         if (selIndex != 0) selIndex--;
                         break;
+                    case ConsoleKey.Backspace:
+                        return;
                     case ConsoleKey.Enter:
                         int m = saves.Length;
                         switch (selIndex)
@@ -311,7 +344,7 @@ namespace Checkers
 
         public static void ExitGame()
         {
-            Console.WriteLine("Выход из игры\t\t\t\t");
+            Console.Write("Выход из игры"); endLine();
             Thread.Sleep(500);
             GameValid = false;
         }
@@ -417,22 +450,22 @@ namespace Checkers
         {
             if (GetCheckersCount(ConsoleColor.White) == 0)
             {
-                Console.Clear();
+                Console.SetCursorPosition(0, 0);
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
-                Console.WriteLine("Чёрные победили!\t\t\t\t");
+                Console.Write("Чёрные победили!"); endLine();
                 GameValid = false;
                 Console.ReadKey();
             }
             else if (GetCheckersCount(ConsoleColor.Black) == 0)
             {
-                Console.Clear();
+                Console.SetCursorPosition(0, 0);
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
-                Console.WriteLine("Белые победили!\t\t\t\t");
+                Console.Write("Белые победили!"); endLine();
                 GameValid = false;
                 Console.ReadKey();
             }
 
-            Console.Clear();
+            Console.SetCursorPosition(0, 0);
             Save();
         }
 
@@ -516,9 +549,9 @@ namespace Checkers
         public void DrawStats()
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine("\nСтатистика:\t\t");
-            Console.WriteLine($"Белых съедено:\t{12 - GetCheckersCount(ConsoleColor.White)}\t\t\nБелых осталось:\t{GetCheckersCount(ConsoleColor.White)}\t\t");
-            Console.WriteLine($"Чёрных съедено:\t{12 - GetCheckersCount(ConsoleColor.Black)}\t\t\nЧёрных осталось:{GetCheckersCount(ConsoleColor.Black)}\t\t\n");
+            Console.Write("\nСтатистика:"); endLine();
+            Console.Write($"Белых съедено:\t{12 - GetCheckersCount(ConsoleColor.White)}{endInLine()}Белых осталось:\t{GetCheckersCount(ConsoleColor.White)}"); endLine();
+            Console.WriteLine($"Чёрных съедено:\t{12 - GetCheckersCount(ConsoleColor.Black)}{endInLine()}Чёрных осталось:{GetCheckersCount(ConsoleColor.Black)}{endInLine()}");
             Console.ResetColor();
         }
 

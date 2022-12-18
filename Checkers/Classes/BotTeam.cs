@@ -152,7 +152,7 @@ namespace Checkers.Classes
                 }
                 else if (sw.Elapsed.Seconds > 3)  // Если цикл вышел в тупик, то скорее всего это поражение черных
                 {
-                    Console.WriteLine("Невозможно найти ход. Поражение " + (TeamColor == ConsoleColor.Black ? "чёрных\t\t" : "белых\t\t"));
+                    Console.WriteLine("Невозможно найти ход. Поражение " + (TeamColor == ConsoleColor.Black ? "чёрных   " : "белых   "));
                     Console.ReadKey();
                     Board.GameValid = false;
                     break;
@@ -164,7 +164,7 @@ namespace Checkers.Classes
 
         public override void Move(ref List<IChecker> pCheckers, Board board)
         {
-            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных\t\t" : "Ход белых\t\t");
+            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных   " : "Ход белых   ");
             Thread.Sleep(Board.BotWalkTime);
 
             bool moved = false;
