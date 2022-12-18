@@ -153,6 +153,7 @@ namespace Checkers.Classes
                 else if (sw.Elapsed.Seconds > 3)  // Если цикл вышел в тупик, то скорее всего это поражение черных
                 {
                     Console.WriteLine("Невозможно найти ход. Поражение " + (TeamColor == ConsoleColor.Black ? "чёрных   " : "белых   "));
+                    Board.DeleteSave();
                     Console.ReadKey();
                     Board.GameValid = false;
                     break;

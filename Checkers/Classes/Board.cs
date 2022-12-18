@@ -16,7 +16,7 @@ namespace Checkers
         public ITeam[] pTeams;
         static public bool GameValid;
         private bool MoveSwitcher;
-        private string SaveName;
+        private static string SaveName;
         public static int BotWalkTime = 500;
         public static int aiLevel = 0;
         public static string sAlphabet = "ABCDEFGH";//"АБВГДЕЖЗ";
@@ -68,8 +68,7 @@ namespace Checkers
         {
             StringBuilder corner = new StringBuilder("=============================");
 
-            if (title.Length % 2 == 0) title+=" ";
-
+            if (title.Length % 2 == 0) title += " ";
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
@@ -386,12 +385,14 @@ namespace Checkers
                 EndFrame();
 
                 if (!GameValid)
-                {
-                    if (File.Exists("saves\\" + SaveName))
-                        File.Delete("saves\\" + SaveName);
                     MainMenu();
-                }
             }
+        }
+
+        public static void DeleteSave()
+        {
+            if (File.Exists("saves\\" + SaveName))
+                File.Delete("saves\\" + SaveName);
         }
 
         public void Load(string filename)
@@ -400,12 +401,12 @@ namespace Checkers
 
             pCheckers.Clear();
 
-            MoveSwitcher = true;
             SaveName = sr.ReadLine();
 
             ConsoleColor player_color = ConvertColor(sr.ReadLine());
             ConsoleColor bot_color = (player_color == ConsoleColor.White ? ConsoleColor.Black : ConsoleColor.White);
             pTeams = new ITeam[2] { new PlayerTeam(player_color), new BotTeam(bot_color) };
+            MoveSwitcher = Convert.ToBoolean(sr.ReadLine());
 
             int CheckersCount = Convert.ToInt32(sr.ReadLine());
             for (int i = 0; i < CheckersCount; i++)
@@ -444,6 +445,7 @@ namespace Checkers
             StreamWriter sw = new StreamWriter("saves\\" + SaveName);
             sw.WriteLine(SaveName);
             sw.WriteLine(pTeams[0].TeamColor.ToString());
+            sw.WriteLine(MoveSwitcher);
 
             sw.WriteLine(pCheckers.Count.ToString());
             for (int i = 0; i < pCheckers.Count; i++)
@@ -454,6 +456,13 @@ namespace Checkers
                 sw.WriteLine(pCheckers[i].IsDamka.ToString());
             }
             sw.Close();
+
+            var sortedFiles = new DirectoryInfo("saves").GetFiles().OrderBy(f => f.LastWriteTime).ToList();
+            while (sortedFiles.Count > 20)
+            {
+                sortedFiles[0].Delete();
+                sortedFiles = new DirectoryInfo("saves").GetFiles().OrderBy(f => f.LastWriteTime).ToList();
+            }
         }
 
         public void Move()
@@ -480,6 +489,7 @@ namespace Checkers
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.Write("Чёрные победили!"); endLine();
                 GameValid = false;
+                Board.DeleteSave();
                 Console.ReadKey();
             }
             else if (GetCheckersCount(ConsoleColor.Black) == 0)
@@ -488,6 +498,7 @@ namespace Checkers
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.Write("Белые победили!"); endLine();
                 GameValid = false;
+                Board.DeleteSave();
                 Console.ReadKey();
             }
 
