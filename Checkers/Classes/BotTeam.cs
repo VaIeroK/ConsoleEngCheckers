@@ -12,16 +12,10 @@ namespace Checkers.Classes
     {
         public BotTeam(ConsoleColor color) : base (color) { }
 
-        public override void Move(ref List<IChecker> pCheckers, Board board)
+        public bool TryKill(ref List<IChecker> pCheckers, Board board)
         {
-            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных" : "Ход белых");
-            Thread.Sleep(Board.BotWalkTime);
-
-            bool moved = false;
-            Random rnd = new Random();
-
-            // Пробуем убить шашку
             List<int> checkers_id = new List<int>();
+            bool moved = false;
 
             for (int i = 0; i < pCheckers.Count; i++)
                 if (pCheckers[i].TeamColor == TeamColor)
@@ -46,14 +40,23 @@ namespace Checkers.Classes
                 if (moved)
                     break;
             }
-            // Конец блока
+            return moved;
+        }
 
-            // Пробуем защитить шашки
+        public bool TryDefend(ref List<IChecker> pCheckers, Board board)
+        {
             List<int> enemy_checkers_id = new List<int>(); // id шашек врагов
 
             for (int i = 0; i < pCheckers.Count; i++)
                 if (pCheckers[i].TeamColor != TeamColor)
                     enemy_checkers_id.Add(i);
+
+            List<int> checkers_id = new List<int>();
+            bool moved = false;
+
+            for (int i = 0; i < pCheckers.Count; i++)
+                if (pCheckers[i].TeamColor == TeamColor)
+                    checkers_id.Add(i);
 
             for (int i = 0; i < enemy_checkers_id.Count; i++)
             {
@@ -82,9 +85,20 @@ namespace Checkers.Classes
                 if (moved)
                     break;
             }
-            // Конец блока
 
-            // Пробуем просто ходить
+            return moved;
+        }
+
+        public bool TryWalk(ref List<IChecker> pCheckers, Board board)
+        {
+            bool moved = false;
+            Random rnd = new Random();
+
+            List<int> checkers_id = new List<int>();
+            for (int i = 0; i < pCheckers.Count; i++)
+                if (pCheckers[i].TeamColor == TeamColor)
+                    checkers_id.Add(i);
+
             var sw = new Stopwatch();
             sw.Start();
 
@@ -135,7 +149,25 @@ namespace Checkers.Classes
                 }
             }
             sw.Stop();
-            // Конец блока
+            return moved;
+        }
+
+        public override void Move(ref List<IChecker> pCheckers, Board board)
+        {
+            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных" : "Ход белых");
+            Thread.Sleep(Board.BotWalkTime);
+
+            bool moved = false;
+            Random rnd = new Random();
+
+            if (!moved)
+                moved = TryKill(ref pCheckers, board);
+
+            if (!moved)
+                moved = TryDefend(ref pCheckers, board);
+
+            if (!moved)
+                moved = TryWalk(ref pCheckers, board);
 
             Thread.Sleep(Board.BotWalkTime);
         }
