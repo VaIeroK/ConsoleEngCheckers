@@ -28,36 +28,17 @@ namespace Checkers
 
         private int menIndex = 0;
         private int selIndex = 0;
-        private void clearEx()
+
+        private void MenuStart()
         {
-            Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < 50; i++)
-            {
-                Console.WriteLine("\t\t\t\t\t\t\t\t\t\t");
-            }
-
-            Console.SetCursorPosition(0, 0);
-        }
-
-    private void MenuStart()
-        {
-            //Console.Clear();
-            clearEx();
-            Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < 50; i++)
-            {
-                Console.WriteLine("\t\t\t\t\t\t\t\t\t\t");
-            }
-
-            Console.SetCursorPosition(0, 0);
+            Console.Clear();
             menIndex = 0;
             selIndex = 0;
         }
         private void MenuUpdate()
         {
             Console.ResetColor();
-            Console.SetCursorPosition(0, 0);
-            //Console.Clear();
+            Console.Clear();
             menIndex = 0;
         }
         private void MenuTitle(string title)
@@ -436,7 +417,7 @@ namespace Checkers
         {
             if (GetCheckersCount(ConsoleColor.White) == 0)
             {
-                Console.SetCursorPosition(0, 0);
+                Console.Clear();
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.WriteLine("Чёрные победили!\t\t\t\t");
                 GameValid = false;
@@ -444,14 +425,14 @@ namespace Checkers
             }
             else if (GetCheckersCount(ConsoleColor.Black) == 0)
             {
-                Console.SetCursorPosition(0, 0);
+                Console.Clear();
                 Frame(); // Костыль, повторная перерисовка для убитых шашек в конце игры
                 Console.WriteLine("Белые победили!\t\t\t\t");
                 GameValid = false;
                 Console.ReadKey();
             }
 
-            Console.SetCursorPosition(0, 0);
+            Console.Clear();
             Save();
         }
 

@@ -131,6 +131,7 @@ namespace Checkers.Classes
                 int topy = rnd.Next(min_y, max_y);
                 int checkers_count = pCheckers.Count;
 
+                // Логика отхода при опасности, и запрета идти в клетку где шашку убъют. Вызывается с шансом 66% т.к. слишком осторожные шашки могут подперать друг друга
                 if (wcount < 1500 && checker.TryMove(topx, topy, ref pCheckers, board, false) && (UseSafeLogic && !checker.IsSafeMove(topx, topy, ref pCheckers, board)))
                     continue;
 
