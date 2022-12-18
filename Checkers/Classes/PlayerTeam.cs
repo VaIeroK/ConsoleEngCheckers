@@ -56,7 +56,7 @@ namespace Checkers.Classes
                     break;
                 else if (sw.Elapsed.Seconds > 3)  // Если цикл вышел в тупик, то скорее всего это поражение черных
                 {
-                    Console.WriteLine("Невозможно найти ход. Поражение " + (TeamColor == ConsoleColor.Black ? "чёрных" : "белых"));
+                    Console.WriteLine("Невозможно найти ход. Поражение " + (TeamColor == ConsoleColor.Black ? "чёрных\t\t" : "белых\t\t"));
                     Console.ReadKey();
                     Board.GameValid = false;
                     break;
@@ -67,7 +67,7 @@ namespace Checkers.Classes
 
         public override void Move(ref List<IChecker> pCheckers, Board board)
         {
-            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных" : "Ход белых");
+            Console.WriteLine(TeamColor == ConsoleColor.Black ? "Ход чёрных\t\t" : "Ход белых\t\t");
 
             CheckMove(ref pCheckers, board);
 
@@ -116,23 +116,23 @@ input:
             }
             catch (Exception)
             {
-                Console.WriteLine("Ход введён неверно!");
+                Console.WriteLine("Ход введён неверно!\t\t\t\t\t\t");
                 goto input;
             }
 
             if (Board.GetPixel(X, Y, ref pCheckers) == null)
             {
-                Console.WriteLine("В ведённой клетке нет шашки!");
+                Console.WriteLine("В ведённой клетке нет шашки!\t\t\t\t");
                 goto input;
             }
             else if (Board.GetPixel(X, Y, ref pCheckers).TeamColor != TeamColor)
             {
-                Console.WriteLine("Нельзя ходить за чужие шашки!");
+                Console.WriteLine("Нельзя ходить за чужие шашки!\t\t\t\t\t\t");
                 goto input;
             }
             else if (LastX != -1 && LastX != X && LastY != -1 && LastY != Y)
             {
-                Console.WriteLine("Вам необходимо побить шашку, шашкой из прошлого хода!");
+                Console.WriteLine("Вам необходимо побить шашку, шашкой из прошлого хода!\t\t");
                 goto input;
             }
 
@@ -163,7 +163,7 @@ input:
 
             if (can_kill && !killed)
             {
-                Console.WriteLine("Вам необходимо побить шашку!");
+                Console.WriteLine("Вам необходимо побить шашку!\t\t");
                 goto input;
             }
             // Конец блока
@@ -198,7 +198,7 @@ input:
                 }
             }
 
-            Console.WriteLine("Ход введён не верно!");
+            Console.WriteLine("Ход введён не верно!\t\t");
             goto input;
         }
     }
