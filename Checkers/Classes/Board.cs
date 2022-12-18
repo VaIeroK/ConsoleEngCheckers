@@ -36,17 +36,18 @@ namespace Checkers
         }
         public static string endInLine()
         {
-            return ("                 \n");
+            return ("                                  \n");
         }
         private void clearEx()
         {
-            Console.SetCursorPosition(0, 0);
-            for (int i = 0; i < 50; i++)
-            {
-                Console.WriteLine("                            ");
-            }
+            //Console.SetCursorPosition(0, 0);
+            //for (int i = 0; i < 50; i++)
+            //{
+            //    Console.WriteLine("                            ");
+            //}
 
             Console.SetCursorPosition(0, 0);
+            Console.Clear();
         }
 
     private void MenuStart()
@@ -61,31 +62,36 @@ namespace Checkers
         {
             Console.ResetColor();
             Console.SetCursorPosition(0, 0);
-            //Console.Clear();
+            
             menIndex = 0;
         }
         private void MenuTitle(string title)
         {
             StringBuilder corner = new StringBuilder("=============================");
 
-            //if (title.Length % 2 == 0) corner.Length--;
             if (title.Length % 2 == 0) title+=" ";
 
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.WriteLine(corner);
+
+            Console.Write(corner);
+            Console.ResetColor(); endLine();
 
             int all_eq = corner.Length - title.Length;
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
 
             for (int i = 0; i < all_eq / 2; i++) { Console.Write(' '); }
             Console.Write(title);
             for (int i = 0; i < all_eq / 2; i++) { Console.Write(' '); }
 
-            Console.WriteLine();
-            Console.WriteLine(corner);
-            Console.ResetColor();
-            Console.WriteLine();
+            Console.ResetColor(); endLine();
+
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(corner); Console.ResetColor(); endLine();
+            endLine();
         }
 
         private void MenuButton(string Text)
@@ -112,6 +118,8 @@ namespace Checkers
                 MenuButton("Выход");
 
                 Console.ForegroundColor = ConsoleColor.Black;
+
+                
 
                 ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();
                 switch (consoleKeyInfo.Key) 
@@ -154,7 +162,7 @@ namespace Checkers
             Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Тип игрока 2");
             Console.ForegroundColor = ConsoleColor.DarkGray;                                    Console.Write(">");
             Console.ForegroundColor = (step == auto_id++) ? ConsoleColor.White : ConsoleColor.DarkGray; Console.Write("Сложность");
-            Console.WriteLine("\n");
+            Console.Write(endInLine()); endLine();
             Console.ResetColor();
             switch (step)
             {
@@ -328,7 +336,7 @@ namespace Checkers
 
                         break;
                 }
-                Console.ResetColor();
+                //Console.ResetColor();
             } while (true);
         }
 
