@@ -104,6 +104,8 @@ namespace Checkers.Classes
 
             int wcount = 0;
 
+            bool UseSafeLogic = (rnd.Next(1, 3) <= 2);
+
             while (!moved)
             {
                 wcount++;
@@ -128,8 +130,6 @@ namespace Checkers.Classes
                 int topx = rnd.Next(min_x, max_x);
                 int topy = rnd.Next(min_y, max_y);
                 int checkers_count = pCheckers.Count;
-
-                bool UseSafeLogic = (rnd.Next(1, 2) == 2);
 
                 if (wcount < 1500 && checker.TryMove(topx, topy, ref pCheckers, board, false) && (UseSafeLogic && !checker.IsSafeMove(topx, topy, ref pCheckers, board)))
                     continue;
