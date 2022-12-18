@@ -104,7 +104,7 @@ namespace Checkers.Classes
 
             int wcount = 0;
 
-            bool UseSafeLogic = (rnd.Next(1, 3) <= 2);
+            bool UseSafeLogic = (rnd.Next(0, 3) <= Board.aiLevel);
 
             while (!moved)
             {
