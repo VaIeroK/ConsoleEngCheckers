@@ -217,8 +217,8 @@ namespace Checkers.Classes
 
                 int CenterX = rnd.Next(3, 5);
                 int CenterY = rnd.Next(3, 5);
-                int OldDistToCenter = Math.Abs(GetDistance(CenterX, CenterY, checker.Pos[1], checker.Pos[0]));
-                int NewDistToCenter = Math.Abs(GetDistance(CenterX, CenterY, topx, topy));
+                double OldDistToCenter = Math.Abs(GetDistance(CenterX, CenterY, checker.Pos[1], checker.Pos[0]));
+                double NewDistToCenter = Math.Abs(GetDistance(CenterX, CenterY, topx, topy));
 
                 // Логика отхода при опасности, и запрета идти в клетку где шашку убъют.
                 if (wcount < 700 && checker.TryMove(topx, topy, ref pCheckers, board, false) && (UseSafeLogic && !checker.IsSafeMove(topx, topy, ref pCheckers, board)))
@@ -274,10 +274,9 @@ namespace Checkers.Classes
             Thread.Sleep(Board.BotWalkTime);
         }
 
-        private int GetDistance(int x1, int y1, int x2, int y2)
+        private double GetDistance(int x1, int y1, int x2, int y2)
         {
-            double res = Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
-            return (int)res;
+            return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
         }
     }
 }
