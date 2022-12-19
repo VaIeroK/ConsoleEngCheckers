@@ -539,7 +539,8 @@ namespace Checkers
             }
 
             Console.Clear();
-            Save();
+            if (GameValid)
+                Save();
         }
 
         public int GetCheckersCount(ConsoleColor color)
