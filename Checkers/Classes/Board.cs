@@ -20,6 +20,7 @@ namespace Checkers
         public static int BotWalkTime = 500;
         public static int aiLevel = 0;
         public static string sAlphabet = "АБВГДЕЖЗ";
+        public static int MovesCount = 0;
 
         public Board()
         {
@@ -183,6 +184,7 @@ namespace Checkers
         {
             pCheckers.Clear();
             GameValid = true;
+            MovesCount = 0;
             pTeams = new ITeam[2];
 
             ConsoleColor first_color = new ConsoleColor();
@@ -376,6 +378,18 @@ namespace Checkers
 
         public void RunGame()
         {
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                try
+                {
+                    BotWalkTime = Convert.ToInt32(Environment.GetCommandLineArgs()[1]);
+                }
+                catch (Exception) 
+                {
+                    BotWalkTime = 500;
+                }
+            }
+
             MainMenu();
 
             while (GameValid)
@@ -403,6 +417,7 @@ namespace Checkers
 
             SaveName = sr.ReadLine();
             aiLevel = Convert.ToInt32(sr.ReadLine());
+            MovesCount = Convert.ToInt32(sr.ReadLine());
 
             ConsoleColor first_color = ConvertColor(sr.ReadLine());
             ConsoleColor second_color = (first_color == ConsoleColor.White ? ConsoleColor.Black : ConsoleColor.White);
@@ -459,6 +474,7 @@ namespace Checkers
             StreamWriter sw = new StreamWriter("saves\\" + SaveName);
             sw.WriteLine(SaveName);
             sw.WriteLine(aiLevel);
+            sw.WriteLine(MovesCount);
             sw.WriteLine(pTeams[0].TeamColor.ToString());
             sw.WriteLine(pTeams[0].Owner);
             sw.WriteLine(pTeams[1].Owner);
@@ -492,6 +508,7 @@ namespace Checkers
                 pTeams[1].Move(ref pCheckers, this);
 
             MoveSwitcher = !MoveSwitcher;
+            MovesCount++;
         }
 
         public void Frame()
@@ -542,7 +559,7 @@ namespace Checkers
 
         public static void ShowPixelByPixel(IChecker checker)
         {
-            Console.WriteLine($"Пиксель: {GetixelByPixel(checker)}");
+            Console.WriteLine($"Пиксель: {GetPixelByPixel(checker)}");
         }
 
         public static string GetPixelByCoord(int x, int y)
@@ -554,7 +571,7 @@ namespace Checkers
             return ($"{sAlphabet[x]}{y + 1}");
         }
 
-        public static string GetixelByPixel(IChecker checker)
+        public static string GetPixelByPixel(IChecker checker)
         {
             return ($"{sAlphabet[checker.Pos[1]]}{checker.Pos[0] + 1}");
         }
@@ -593,6 +610,7 @@ namespace Checkers
             Console.Write("\nСтатистика:"); endLine();
             Console.Write($"Белых съедено:   {12 - GetCheckersCount(ConsoleColor.White)}{endInLine()}Белых осталось:  {GetCheckersCount(ConsoleColor.White)}"); endLine();
             Console.WriteLine($"Чёрных съедено:  {12 - GetCheckersCount(ConsoleColor.Black)}{endInLine()}Чёрных осталось: {GetCheckersCount(ConsoleColor.Black)}{endInLine()}");
+            Console.WriteLine($"Количество ходов: {MovesCount}{endInLine()}");
             Console.ResetColor();
         }
 
